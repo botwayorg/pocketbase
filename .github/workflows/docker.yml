@@ -1,0 +1,26 @@
+name: PocketBase Docker CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Publish ?"
+        required: true
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_ID }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and Push
+        run: |
+          docker build -t botwayorg/pocketbase:latest .
+          docker push botwayorg/pocketbase:latest
