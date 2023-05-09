@@ -1,11 +1,12 @@
 name: PocketBase Docker CI
 
 on:
-  workflow_dispatch:
-    inputs:
-      release_tag:
-        description: "Publish ?"
-        required: true
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-docker:
@@ -22,5 +23,8 @@ jobs:
 
       - name: Build and Push
         run: |
+          docker build -t botwayorg/pb-core:latest --file Dockerfile.core .
+          docker push botwayorg/pb-core:latest
+
           docker build -t botwayorg/pocketbase:latest .
           docker push botwayorg/pocketbase:latest

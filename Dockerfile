@@ -1,19 +1,20 @@
-FROM alpine:latest as download
-
-RUN apk add curl
-
-RUN curl -s https://get-latest.deno.dev/pocketbase/pocketbase?no-v=true >> tag.txt
-
-RUN wget https://github.com/pocketbase/pocketbase/releases/download/v$(cat tag.txt)/pocketbase_$(cat tag.txt)_linux_amd64.zip \
-    && unzip pocketbase_$(cat tag.txt)_linux_amd64.zip \
-    && chmod +x /pocketbase
-
+FROM botwayorg/pb-core:latest AS download
 FROM alpine:latest
 
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+ENV PKGS="git curl wget npm lld clang build-base ca-certificates bash-completion jq llvm" DB="pocketbase"
 
-EXPOSE 8090
+ENV CMD="/usr/local/bin/pocketbase serve --http=0.0.0.0:8090 --dir=/root/.pocketbase"
+
+ARG GITHUB_TOKEN
+
+RUN apk update && apk add --update $PKGS && rm -rf /var/cache/apk/* && npm i -g npm@latest @botway/strg@latest
 
 COPY --from=download /pocketbase /usr/local/bin/pocketbase
 
-ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data"]
+WORKDIR /app
+
+RUN strg --init && npm i
+
+EXPOSE 8090
+
+ENTRYPOINT ["npm", "start"]
