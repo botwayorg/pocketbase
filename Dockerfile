@@ -11,8 +11,6 @@ RUN apk update && apk add --update $PKGS && rm -rf /var/cache/apk/* && npm i -g 
 
 COPY --from=download /pocketbase /usr/local/bin/pocketbase
 
-RUN strg --check
-
 EXPOSE 8090
 
-ENTRYPOINT ["strg", "--sync"]
+ENTRYPOINT strg --check && strg --sync
