@@ -1,7 +1,7 @@
 # Botway PocketBase Docker Image
 
-> Run **botwayorg/pocketbase**
-
 ```bash
-docker run -it --rm -p 8090:8090 botwayorg/pocketbase
+docker build -t pocketbase
+
+docker run -p 8090:8090 --env GITHUB_TOKEN=token
 ```
