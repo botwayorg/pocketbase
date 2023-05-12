@@ -25,6 +25,3 @@ jobs:
         run: |
           docker build -t botwayorg/pb-core:latest --file Dockerfile.core .
           docker push botwayorg/pb-core:latest
-
-          docker build -t botwayorg/pocketbase:latest .
-          docker push botwayorg/pocketbase:latest
