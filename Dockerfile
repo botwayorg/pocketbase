@@ -1,7 +1,7 @@
 FROM botwayorg/pb-core:latest AS download
 FROM alpine:latest
 
-ENV PKGS="git npm build-base ca-certificates"
+ENV PKGS="git git-lfs npm build-base ca-certificates"
 ENV CMD="/usr/local/bin/pocketbase serve --http=0.0.0.0:8090 --dir=/root/.pocketbase"
 ENV DB="pocketbase"
 
